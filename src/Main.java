@@ -8,6 +8,9 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+        //Fix the search not showing the instructor
+        //Fix the Sort methods not showing and telling what they are actually sorting
+        //Fix the second search reverting to the first search when entering 0
         User currentUser = null;
         Platform platform = new Platform();
         List<User> userList = platform.getUsers();

@@ -68,10 +68,9 @@ public class Student extends User implements Cloneable, Comparable<Student>{
     }
 
     @Override
-    public String toString(){
-        return String.format("%s (%d)", name, userId);
+    public String toString() {
+        return String.format("Student: %s", super.toString());
     }
-
     @Override
     public Student clone() throws CloneNotSupportedException {
         Student cloned = (Student) super.clone();

@@ -13,11 +13,14 @@ public class Instructor extends User implements Cloneable{
         teachingCourses = new ArrayList<>();
     }
 
-    public void setTeachingCourses(ArrayList<Course> courses){
-        teachingCourses.addAll(courses);
+    public void addTeachingCourse(Course course){
+        teachingCourses.add(course);
     }
 
-    //Override toString
+    @Override
+    public String toString() {
+        return String.format("Instructor: %s", super.toString());
+    }
     @Override
     public Instructor clone() throws CloneNotSupportedException {
         Instructor cloned = (Instructor) super.clone();
@@ -79,7 +82,7 @@ public class Instructor extends User implements Cloneable{
 
         Random rand = new Random();
 
-        System.out.println("------ Course Creator ------ \nCourse Levels: \n1. Beginner \n2.Intermediate \n3.Advanced");
+        System.out.println("------ Course Creator ------ \nCourse Levels: \n1. Beginner \n2. Intermediate \n3. Advanced");
         SystemHelper.Choice choice = new SystemHelper.Choice("Choose a level for the course (Enter 0 to go back): ");
 
         int option = choice.ChoiceByInt(3, false);
@@ -109,14 +112,13 @@ public class Instructor extends User implements Cloneable{
                 courseTitle = sc.nextLine().trim();
 
                 if(courseTitle.isEmpty()){
-                    System.out.println(Course.courseCount);
-                    courseTitle = "NewCourse" + Course.courseCount++;
+                    courseTitle = "NewCourse" + Course.courseCount + 1;
                     System.out.println("Skipped title input: Generated default title (" + courseTitle + ").");
-                    System.out.println(Course.courseCount);
+                    break;
                 }
                 int id = Integer.parseInt(courseTitle);
                 if(id == 0){
-                    return;
+                    break;
                 }
                 else{
                     System.out.println("Error: The title of the course must not be numbers.");
@@ -135,19 +137,22 @@ public class Instructor extends User implements Cloneable{
                     do{
                         int randomNum = rand.nextInt(10000);
                         userInput = String.format("%04d", randomNum);
-                        userId = Integer.parseInt(userInput);
+                        courseId = Integer.parseInt(userInput);
                     } while(platform.findCourseById(Integer.parseInt(userInput)) != null);
-                    System.out.println("Skipped id input: Generated random id (" + userId + ").");
+                    System.out.println("Skipped id input: Generated random id (" + courseId + ").");
+                    break;
                 }
                 int id = Integer.parseInt(userInput);
                 if(id == 0){
-                    return;
+                    break;
                 }
                 else if(platform.findUserById(id) != null){
                     System.out.println("Error: The id you entered is already used.");
+                    continue;
                 }
                 else if(id < 0){
                     System.out.println("Error: The id number must be positive.");
+                    continue;
                 }
                 courseId = id;
                 break;
@@ -163,13 +168,15 @@ public class Instructor extends User implements Cloneable{
 
                 if(userInput.isEmpty()){
                     System.out.println("Skipped capacity input: Default capacity is set (" + 15 + ").");
+                    break;
                 }
                 int capacity = Integer.parseInt(userInput);
                 if(capacity == 0){
-                    return;
+                    break;
                 }
                 else if(capacity < 0){
                     System.out.println("Error: The capacity must be positive.");
+                    continue;
                 }
                 courseCapacity = capacity;
                 break;
@@ -185,13 +192,15 @@ public class Instructor extends User implements Cloneable{
 
                 if(userInput.isEmpty()){
                     System.out.println("Skipped price input: Priced the course as free (" + 0.0 + ").");
+                    break;
                 }
                 double price = Double.parseDouble(userInput);
                 if(price == 0){
-                    return;
+                    break;
                 }
                 else if(price < 0){
                     System.out.println("Error: The price must be positive.");
+                    continue;
                 }
                 coursePrice = price;
                 break;
@@ -200,7 +209,10 @@ public class Instructor extends User implements Cloneable{
             }
         }
 
-        platform.addCourse(new Course(courseId, courseCapacity, courseTitle, coursePrice, courseLevel));
+        //If you can, add the ability to confirm creation.
+        Course createdCourse = new Course(courseId, courseCapacity, courseTitle, coursePrice, courseLevel);
+        platform.addCourse(createdCourse);
+        addTeachingCourse(createdCourse);
     }
 
     public Student showEnrolledStudents(Course course){

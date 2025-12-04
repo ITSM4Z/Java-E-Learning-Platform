@@ -43,11 +43,12 @@ public class Platform {
                     "Error: You must enter a valid user choice.");
 
             List<User> users = new ArrayList<>(getUsers());
-            User user = searcher.searchForUser(users, choice);
-            if(user == null){
+            if(users.isEmpty()){
                 System.out.println("There are no users in the system.");
+                return null;
             }
-            return user;
+
+            return searcher.searchForUser(users, choice);
         } catch (UserNotFoundException e) {
             throw new UserNotFoundException();
         }

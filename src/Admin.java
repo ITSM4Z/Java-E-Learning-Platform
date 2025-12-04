@@ -13,7 +13,10 @@ public class Admin extends User implements Cloneable{
         this.platform = platform;
     }
 
-    //Override toString
+    @Override
+    public String toString() {
+        return String.format("Admin: %s", super.toString());
+    }
     @Override
     public Admin clone() throws CloneNotSupportedException {
         return (Admin) super.clone();
@@ -47,7 +50,7 @@ public class Admin extends User implements Cloneable{
                     "\n5. View Students Sorted by GPA \n6. View Courses Sorted by Difficulty");
 
             choice = new SystemHelper.Choice("Choose an option (Enter 0 to go back): ");
-            option = choice.ChoiceByInt(2, false);
+            option = choice.ChoiceByInt(6, false);
 
             switch (option){
                 case 0: return;
@@ -77,6 +80,8 @@ public class Admin extends User implements Cloneable{
                 case 4:
                     try {
                         User user = platform.searchForUser();
+                        if(user == null) break;
+
                         if(platform.removeUser(user)){
                             System.out.println(user.name + " removed successfully.");
                         }
@@ -101,7 +106,6 @@ public class Admin extends User implements Cloneable{
                     }
                     break;
                 default:
-                    System.out.println("Error: You must enter a valid choice number.");
                     break;
             }
         }
@@ -146,13 +150,15 @@ public class Admin extends User implements Cloneable{
                 if(userName.isEmpty()){
                     userName = "NewUser" + User.usersCount++;
                     System.out.println("Skipped name input: Generated default name (" + userName + ").");
+                    break;
                 }
                 int id = Integer.parseInt(userName);
                 if(id == 0){
-                    return;
+                    break;
                 }
                 else{
                     System.out.println("Error: The name of the user must not be numbers.");
+                    continue;
                 }
             } catch (NumberFormatException numberE){
                 break;
@@ -171,16 +177,19 @@ public class Admin extends User implements Cloneable{
                         userId = Integer.parseInt(userInput);
                     } while(platform.findUserById(Integer.parseInt(userInput)) != null);
                     System.out.println("Skipped id input: Generated random id (" + userId + ").");
+                    break;
                 }
                 int id = Integer.parseInt(userInput);
                 if(id == 0){
-                    return;
+                    break;
                 }
                 else if(platform.findUserById(id) != null){
                     System.out.println("Error: The id you entered is already used.");
+                    continue;
                 }
                 else if(id < 0){
                     System.out.println("Error: The id number must be positive.");
+                    continue;
                 }
                 userId = id;
                 break;
@@ -196,15 +205,15 @@ public class Admin extends User implements Cloneable{
 
                 if(email.isEmpty()){
                     System.out.println("Skipped email input: No email provided.");
+                    break;
                 }
                 int id = Integer.parseInt(email);
                 if(id == 0){
-                    return;
+                    break;
                 }
                 else{
                     System.out.println("Error: The email of the user must not be numbers.");
                 }
-                break;
             } catch (NumberFormatException numberE){
                 if(platform.findUserByEmail(email) != null){
                     System.out.println("Error: The email you entered is already used.");

@@ -54,9 +54,11 @@ public class SystemHelper {
                     }
                     else if(choice < 0){
                         System.out.println(negativeError);
+                        continue;
                     }
                     else if(choice > bounds){
                         System.out.println(boundsError);
+                        continue;
                     }
                     break;
                 } catch (NumberFormatException e){

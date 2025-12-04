@@ -49,6 +49,6 @@ public abstract class User {
     public abstract void displayDashboard(Platform platform) throws UserNotFoundException;
 
     public String toString() {
-        return String.format("User: %s (%d). Email: %s Role: %s", name, userId, email, userRole);
+        return String.format("%s (%d). Email: %s Role: %s", name, userId, email, userRole);
     }
 }
