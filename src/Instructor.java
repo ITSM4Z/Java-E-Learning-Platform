@@ -44,7 +44,6 @@ public class Instructor extends User implements Cloneable{
 
     @Override
     public void displayDashboard(Platform platform) {
-        Scanner sc = new Scanner(System.in);
         SystemHelper.Choice choice;
 
         int option;
