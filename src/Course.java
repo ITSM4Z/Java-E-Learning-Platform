@@ -1,6 +1,15 @@
 /**
  *
  * @author Meshal
+*/
+
+/**
+ * Course class represents a specific course in the E-Learning Platform.
+ *
+ * This class serves as a central entity in the system, managing course details,
+ * enrolled students, modules, and performance ratings. It implements the
+ * {@link Enrollable} interface to handle student registration logic and
+ * {@link Rateable} to track course quality.
  */
 
 import java.time.LocalDate;
@@ -10,7 +19,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+
 public class Course implements Enrollable, Rateable, Cloneable, Comparable<Course>{
+
+    /**
+     * Constructs a new Course with the specified details.
+     *
+     * @param courseID    The UNIQUE identifier for the course.
+     * @param capacity    The max number of students allowed.
+     * @param title       The title of the course.
+     * @param price       The cost of enrollment.
+     * @param courseLevel The difficulty level (Beginner, Intermediate, Advanced).
+     */
+
     private int courseID;
     private int capacity;
     private String title;
@@ -24,6 +45,7 @@ public class Course implements Enrollable, Rateable, Cloneable, Comparable<Cours
 
     public Course() {}
     public Course(int courseID, int capacity, String title, double price, CourseLevel courseLevel) {
+
         this.courseID = courseID;
         this.capacity = capacity;
         this.title = title;
@@ -85,28 +107,46 @@ public class Course implements Enrollable, Rateable, Cloneable, Comparable<Cours
 
     public List<Student> getEnrolledStudents() {
         return Collections.unmodifiableList(enrolledStudents);
-    } //Made it return an unmodifiablelist
+    } //Made it return an unmodifiableList
     public void setEnrolledStudents(ArrayList<Student> enrolledStudents) {
         this.enrolledStudents = enrolledStudents;
     }
 
-    public String courseInfo(){ //new
+    public String courseInfo(){
         return String.format("%s (%d) \n%d Students \nProviding %d Modules \nRatings: %.1f \nPrice: %.2f",
                 title, courseID, enrolledStudents.size(), modules.size(), averageRating, price);
+
+                 /**
+                 * This returns a formatted string summary of the course statistics.
+                 * title, ID, enrollment count, module count, rating, and price.
+                 *
+                 * @param return A multi-line string containing course details.
+                 */
     }
 
     @Override
-    public String toString(){ //new
+    public String toString(){
         return String.format("%s (%d)", title, courseID);
     }
 
+
     @Override
-    public Course clone() throws CloneNotSupportedException { //new
+    public Course clone() throws CloneNotSupportedException {
         Course cloned = (Course) super.clone();
         cloned.enrolledStudents = new ArrayList<>(this.enrolledStudents);
         cloned.modules = new ArrayList<>(this.modules);
         cloned.ratings = new ArrayList<>(this.ratings);
         return cloned;
+
+        /**
+         * Creates a deep copy of the Course object.
+         *
+         * This method ensures that changeable fields like enrolledStudents, modules,
+         * and ratings are duplicated so that the clone is independent of the original.
+         *
+         * @return A new independent Course object.
+         * @throws CloneNotSupportedException if the object cannot be cloned.
+         */
     }
 
     @Override
@@ -124,8 +164,16 @@ public class Course implements Enrollable, Rateable, Cloneable, Comparable<Cours
     }
 
     @Override
-    public int compareTo(Course course) { //new
+    public int compareTo(Course course) {
         return Integer.compare(this.courseLevel.ordinal(), course.courseLevel.ordinal());
+
+        /**
+         * Compares this course with another, (DIFFICULTY BASED).
+         *
+         * @param course, The other course to compare against.
+         * @return A negative integer, zero, or a positive integer as this course's level
+         * is less than, equal to, or greater than the specified course's level.
+         */
     }
 
     @Override
@@ -141,7 +189,17 @@ public class Course implements Enrollable, Rateable, Cloneable, Comparable<Cours
         enrollmentReceipt.printReceipt();
         System.out.println("Student: " + s.getName() + " was Successfully added!");
         return true;
+
+        /**
+         * Enrolls a student in this course if and only if capacity allows + they are not already registered.
+         *
+         * @param s is the Student object attempting to enroll.
+         * @return true if the enrollment was successful.
+         * @throws AlreadyEnrolledException if the student is already in the enrolled list.
+         * @throws CourseFullException if the course has reached its maximum capacity.
+         */
     }
+
     @Override
     public boolean drop(Student s) throws UserNotFoundException { //new
         if (enrolledStudents.contains(s)) {
@@ -152,19 +210,34 @@ public class Course implements Enrollable, Rateable, Cloneable, Comparable<Cours
             throw new UserNotFoundException("Error: The student is not on the registered list.");
         }
         return false;
+
+        /**
+         * Removes (drops) a student from the course.
+         *
+         * @param s The student to be removed.
+         * @return true if the student was successfully removed.
+         * @throws UserNotFoundException if the student is NOT currently enrolled in this course.
+         */
     }
 
     @Override
-    public void addRating(Double rating) { //added functionality
+    public void addRating(Double rating) {
         ratings.add(rating);
         calculateAverageRating();
+
+        /**
+         * Adds a rating to the course and recalculates the average.
+         *
+         * @param rating is the rating score (typically 1.0 to 5.0).
+         */
     }
 
     @Override
-    public double getAverageRating() { //actually returned something
+    public double getAverageRating() {
         return averageRating;
     }
-    public void calculateAverageRating(){ //new
+
+    public void calculateAverageRating(){
         if(ratings.isEmpty()){
             averageRating = 0;
             return;
@@ -174,9 +247,18 @@ public class Course implements Enrollable, Rateable, Cloneable, Comparable<Cours
             avg += rating;
         }
         averageRating = avg/ratings.size();
+
+        /**
+         * Recalculates the average rating based on the current list of ratings.
+         * Updates the internal averageRating field.
+         */
     }
 
-    public class Enrollment { //made it an inner class
+    /**
+     * The class below is an inner class representing a receipt for a successful enrollment.
+     * This encapsulates the details of a specific registration event.
+     */
+    public class Enrollment {
         private Student student;
         private String enrollmentDate;
 
