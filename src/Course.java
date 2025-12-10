@@ -1,17 +1,3 @@
-/**
- *
- * @author Meshal
-*/
-
-/**
- * Course class represents a specific course in the E-Learning Platform.
- *
- * This class serves as a central entity in the system, managing course details,
- * enrolled students, modules, and performance ratings. It implements the
- * {@link Enrollable} interface to handle student registration logic and
- * {@link Rateable} to track course quality.
- */
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -19,6 +5,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Course class represents a specific course in the E-Learning Platform.
+ * This class serves as a central entity in the system, managing course details,
+ * enrolled students, modules, and performance ratings. It implements the
+ * {@link Enrollable} interface to handle student registration logic and
+ * {@link Rateable} to track course quality.
+ *
+ * @author Meshal
+ */
 
 public class Course implements Enrollable, Rateable, Cloneable, Comparable<Course>{
 

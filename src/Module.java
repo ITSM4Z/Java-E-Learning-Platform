@@ -1,17 +1,14 @@
-/**
- *
- * @author Meshal
- *
- * This class represents a structural unit (chapter/section) of a Course.
- *
- * A Module acts as a container for multiple Lesson objects.
- * It allows for organizing course content into logical sections.
- *
- */
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+/**
+ * This class represents a structural unit (chapter/section) of a Course.
+ * A Module acts as a container for multiple Lesson objects.
+ * It allows for organizing course content into logical sections.
+ *
+ * @author Meshal
+ */
 
 public class Module {
     private String title;
